@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --config webpack.client.js && webpack --config webpack.server.js && node ./build/server.bundle.js"
+    "start": "webpack --config webpack.client.js && webpack --config webpack.server.js && node ./build/server.bundle.js",
+    "build": "webpack --config webpack.client.js && webpack --config webpack.build.js && node ./build/build.bundle.js",
+    "isr": "webpack --config webpack.isr.js && node ./build/isr.bundle.js"
   },
   "keywords": [],
   "author": "",

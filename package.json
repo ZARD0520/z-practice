@@ -8,7 +8,9 @@
     "start": "webpack --config webpack.client.js && webpack --config webpack.server.js && node ./build/server.bundle.js",
     "build": "webpack --config webpack.client.js && webpack --config webpack.build.js && node ./build/build.bundle.js",
     "isr": "webpack --config webpack.isr.js && node ./build/isr.bundle.js",
-    "start-rsc":"tsx watch ./react-rsc/index.ts"
+    "start-rsc": "tsx watch ./react-rsc/server/rsc.ts",
+    "start-ssr": "tsx watch ./react-rsc/server/ssr.ts",
+    "start-r&s": "concurrently \"npm run start:ssr\" \"npm run start:rsc\""
   },
   "keywords": [],
   "author": "",
@@ -17,7 +19,9 @@
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.26.3",
+    "@types/node": "^22.10.2",
     "babel-loader": "^9.2.1",
+    "concurrently": "^9.1.0",
     "escape-html": "^1.0.3",
     "express": "^4.21.2",
     "react": "^19.0.0",

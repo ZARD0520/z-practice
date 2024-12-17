@@ -1,7 +1,7 @@
 import React from 'react'
 import { readFile, readdir } from "fs/promises"
 
-export function Layout({ children }) {
+export function Layout({ children }: any) {
   const author = "YaYu";
   return (
     <html>
@@ -41,7 +41,7 @@ export function PostPage({ slug }) {
   return <Post slug={slug} />
 }
 
-async function Post({ slug }) {
+async function Post({ slug }: any) {
   let content = await readFile("./posts/" + slug + ".txt", "utf8");
   return (
     <section>

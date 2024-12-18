@@ -1,7 +1,8 @@
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import { renderJSXToHTML, renderJSXToClientJSX, stringifyJSX } from './utils'
+import { renderJSXToClientJSX, stringifyJSX } from './utils'
 import { Layout, IndexPage, PostPage } from './components'
+import { renderToPipeableStream } from "react-server-dom-webpack/server.node"
 
 export async function htmlGenerator(url) {
   let jsx = <Router url={url} />
@@ -38,8 +39,6 @@ function Router({ url }) {
   return <Layout>{page}</Layout>;
 }
 
-export async function jsxGenerator(url) {
-  let clientJSX = await renderJSXToClientJSX(<Router url={url} />);
-  const clientJSXString = JSON.stringify(clientJSX, stringifyJSX);
-  return clientJSXString
+export function jsxGenerator(url) {
+  return renderToPipeableStream(<Router url={url} />)
 }

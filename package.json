@@ -8,7 +8,7 @@
     "start": "webpack --config webpack.client.js && webpack --config webpack.server.js && node ./build/server.bundle.js",
     "build": "webpack --config webpack.client.js && webpack --config webpack.build.js && node ./build/build.bundle.js",
     "isr": "webpack --config webpack.isr.js && node ./build/isr.bundle.js",
-    "start-rsc": "tsx watch ./react-rsc/server/rsc.ts",
+    "start-rsc": "tsx watch --conditions=react-server ./react-rsc/server/rsc.ts",
     "start-ssr": "tsx watch ./react-rsc/server/ssr.ts",
     "start-r&s": "concurrently \"npm run start:ssr\" \"npm run start:rsc\""
   },
@@ -24,8 +24,10 @@
     "concurrently": "^9.1.0",
     "escape-html": "^1.0.3",
     "express": "^4.21.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "node-fetch": "^3.3.2",
+    "react": "18.3.0-canary-c3048aab4-20240326",
+    "react-dom": "18.3.0-canary-c3048aab4-20240326",
+    "react-server-dom-webpack": "18.3.0-canary-c3048aab4-20240326",
     "tsx": "^4.19.2",
     "webpack": "^5.97.1",
     "webpack-cli": "^5.1.4"

@@ -22,10 +22,11 @@ let data = createFromFetch(
 
 hydrateRoot(document, React.createElement(Shell, { data }))
 
-async function navigate(pathname) {
+async function navigate(pathname, revalidate = true) {
   currentPathname = pathname;
 
-  if (clientJSXCache[pathname]) {
+  // 不校验
+  if (!revalidate && clientJSXCache[pathname]) {
     updateRoot(clientJSXCache[pathname])
     return
   } else {
@@ -64,3 +65,33 @@ window.addEventListener("popstate", () => {
   // 处理浏览器前进后退事件
   navigate(window.location.pathname);
 });
+
+// 阻止表单提交，以 POST 请求调用 `/actions/*`，用 navigate 函数重新渲染页面
+window.addEventListener("submit", async (e) => {
+  const action = e.target.action
+  const actionURL = new URL(action, window.location.origin)
+
+  if (!actionURL.pathname.startsWith("/actions/")) {
+    return
+  }
+
+  e.preventDefault()
+
+  if (e.target.method === "post") {
+    const formData = new FormData(e.target)
+    const body = Object.fromEntries(formData.entries())
+    const response = await fetch(action, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+
+    if (!response.ok) return
+    navigate(window.location.pathname, false) // false则走缓存，不重新渲染整个页面
+    return
+  } else {
+    console.error("unknown method", e.target.method)
+  }
+})

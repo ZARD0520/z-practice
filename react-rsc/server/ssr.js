@@ -9,10 +9,15 @@ import { serverAction }  from "../actions";
 const app = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.static('public'))
 
 app.get("/:route(*)", async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
-
+  
+  // 处理 favicon.ico 文件，防止报错
+  if (url.pathname === '/favicon.ico') {
+    return
+  }
   // client.js
   if (url.pathname === "/client.js") {
     const content = await readFile("./client.js", "utf8");

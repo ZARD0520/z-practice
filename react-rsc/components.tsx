@@ -1,3 +1,4 @@
+import Like from "./Like"
 import React, { Suspense } from 'react'
 import { readFile, readdir } from "fs/promises"
 
@@ -121,6 +122,7 @@ async function Post({ slug }: any) {
     <section>
       <a className="text-blue-600" href={"/" + slug}>{slug}</a>
       <article className="h-40 mt-5 flex-1 rounded-xl bg-indigo-500 text-white flex items-center justify-center">{content}</article>
+      <Like />
     </section>
   )
 }

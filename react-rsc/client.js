@@ -2,8 +2,6 @@ import * as React from "react"
 import { use, useState, startTransition } from "react"
 import { createFromFetch } from "react-server-dom-webpack"
 import { hydrateRoot, createRoot } from 'react-dom/client'
-import { readFile, writeFile } from "fs/promises"
-import path from "path"
 
 // 客户端路由缓存
 let clientJSXCache = {}
@@ -152,45 +150,4 @@ export async function renderJSXToClientJSX(jsx) {
       );
     }
   } else throw new Error("Not implemented");
-}
-
-async function transformClientComponent(Component, props) {
-
-  const raw = Component.toString()
-  const children = await renderJSXToClientJSX(props.children)
-
-  const clientComponent = {
-    value: raw,
-    props: {
-      ...props,
-      "data-client": true,
-      "data-component": Component.name,
-      children,
-    },
-  }
-
-  await createClientComponentJS(clientComponent)
-
-  return React.createElement(
-    "div",
-    {
-      "data-client": true,
-      "data-component": Component.name
-    }
-  )
-}
-
-async function createClientComponentJS(Component) {
-  const { props, value } = Component
-  const name = props["data-component"]
-  const filenameRaw = path.join(process.cwd(), "public", "client", name + ".js")
-  const filename = path.normalize(filenameRaw)
-  const fileContents = `import React from "react"
-      export const props = ${JSON.stringify(props)}
-      export const jsx = ${value.replaceAll('import_react.default', 'React')}`
-  try {
-    await writeFile(filename, fileContents)
-  } catch (err) {
-    console.log("error in writeComponentToDisk", err)
-  }
 }
